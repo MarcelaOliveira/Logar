@@ -5,7 +5,7 @@ const FormLogin = (props) => (
   <div>
     <h1 className="text-center h1 mt-2 fw-normal">Login</h1>
     <div className="container d-flex justify-content-center">
-      <div className="card mt-2 w-50">
+      <div className="card mt-2 mb-2 w-50">
         <div className="card-body">
           <form onSubmit={props.onSubmit}>
             <div className="mb-3">
@@ -48,7 +48,13 @@ const FormLogin = (props) => (
           </form>
         </div>
       </div>
-      <br />
+    </div>
+    <div className="container d-flex justify-content-center">
+      <div className="card">
+        <div className="card-body">
+          Já é cadastrado <button onClick={props.onClick}>Cadastre-se</button>
+        </div>
+      </div>
     </div>
   </div>
 );

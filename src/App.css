@@ -1,3 +1,13 @@
 form {
   border-radius: 4em;
 }
+spam {
+  color: red;
+  font-size: 20px;
+  padding-bottom: 2px;
+}
+button {
+  color: blue;
+  border: none;
+  background-color: #fff;
+}

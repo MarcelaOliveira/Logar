@@ -5,10 +5,8 @@ export default function Visualização() {
     <div>
       <div class="container mt-5">
         <div class="my-3 px-5 py-5 bg-white rounded shadow-sm">
-          <div class="row">
-            <div class="col-lg-6 col-12">
-              <h1 class="text-left">Funcionários</h1>
-            </div>
+          <div class="col-12">
+            <h1 class="text-center">Usuários cadastrados</h1>
           </div>
           <div class="table-responsive my-5">
             <table class="table">

@@ -7,3 +7,7 @@ form {
   padding: 2em;
   border-radius: 2em;
 }
+spam {
+  color: red;
+  font-size: 20px;
+}

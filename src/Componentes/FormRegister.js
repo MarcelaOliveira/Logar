@@ -5,9 +5,8 @@ const FormCadastro = (props) => (
   <div>
     <h1 className="text-center h1 mt-2 fw-normal">Register</h1>
     <div className="container d-flex justify-content-center">
-      <div className="card mt-2 mb-4 w-50">
+      <div className="card mb-2 w-50">
         <div className="card-body">
-          <br />
           <form onSubmit={props.onSubmit}>
             <div className="mb-3">
               <Input
@@ -77,6 +76,13 @@ const FormCadastro = (props) => (
               Register
             </button>
           </form>
+        </div>
+      </div>
+    </div>
+    <div className="container d-flex justify-content-center">
+      <div className="card">
+        <div className="card-body">
+          Já é cadastrado <button onClick={props.onClickC}>Logar</button>
         </div>
       </div>
     </div>

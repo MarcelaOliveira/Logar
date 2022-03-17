@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import FormLogin from "./Componentes/FormLogin";
 import FormRegister from "./Componentes/FormRegister";
 import Welcome from "./Componentes/Welcome";
+import Visualizar from "./Componentes/Visualização";
 import "./App.css";
 
 const App = () => {
-  const [values, setValues] = useState([{}]);
-  const [valuesAux, setValuesAux] = useState([{}]);
-  const [users, setUsers] = useState([{}]);
+  const [values, setValues] = useState([]);
   const [tela, setTela] = useState("Cadastro");
+  const [logged, setLogged] = useState();
   const [mensage, setMensage] = useState({});
 
   const getLocalStorage = (usuario) => {
-    const dbUserStorage = localStorage.getItem("dbUserStorage");
-    const dbUser = dbUserStorage ? JSON.parse(dbUserStorage) : [];
+    const dbUserStorage = localStorage.getItem("dbUser");
+    const dbUser = dbUserStorage ? JSON.parse(dbUserStorage) : [{}];
     if (usuario) {
       return dbUser.find((user) => user.email === usuario.email);
     } else {
@@ -23,24 +23,14 @@ const App = () => {
 
   const setLocalStorage = (dbUser) => {
     localStorage.setItem("dbUser", JSON.stringify(dbUser));
-    setUsers(dbUser);
   };
 
   useEffect(() => {
-    const dbUser = getLocalStorage();
-    dbUser.push(valuesAux);
-    setLocalStorage(dbUser);
-  }, [valuesAux]);
-
-  useEffect(() => {
-    const dbUser = getLocalStorage();
-    console.log(dbUser);
-    if (!dbUser) {
-      setLocalStorage();
-    } else {
-      setLocalStorage(dbUser);
-    }
-  }, []);
+    const logado = localStorage.getItem("logado");
+    const login = logado ? JSON.parse(logado) : "";
+    login.push(logged);
+    localStorage.setItem("logged", JSON.stringify(login));
+  }, [logged]);
 
   const setInputs = (evento) => {
     const stat = { ...values };
@@ -50,12 +40,17 @@ const App = () => {
 
   const handleRegister = (event) => {
     event.preventDefault();
-    if (getLocalStorage(values)) {
-      setMensage("Usuário já cadastrado");
+    if (values.senha === values.confSenha) {
+      if (getLocalStorage(values)) {
+        setMensage("Usuário já cadastrado, faça login, ou verifique o email");
+      } else {
+        const dbUser = getLocalStorage();
+        dbUser.push(values);
+        setLocalStorage(dbUser);
+        setTela("Login");
+      }
     } else {
-      setValuesAux(values);
-      setTela("Login");
-      setMensage("Registro Salvo");
+      setMensage("Senha e confirmar senha não coicidem");
     }
   };
 
@@ -63,8 +58,8 @@ const App = () => {
     e.preventDefault();
     if (getLocalStorage(values)) {
       if (values.email === "marcela@gmail.com" && values.senha === "1234") {
-        setTela("Welcome");
-        setMensage("Deu bom");
+        setLogged(values.email);
+        setTela("Visualizar");
       } else {
         setTela("Welcome");
       }
@@ -74,14 +69,27 @@ const App = () => {
     }
   };
 
+  const onClick = (e) => {
+    e.preventDefault();
+    setTela("Cadastro");
+  };
+
+  const onClickC = (e) => {
+    e.preventDefault();
+    setTela("Login");
+  };
   switch (tela) {
     case "Login":
       return (
         <div>
-          <FormLogin onSubmit={handleLogin} setInputs={setInputs} />
+          <FormLogin
+            onSubmit={handleLogin}
+            setInputs={setInputs}
+            onClick={onClick}
+          />
           {mensage.length > 0 && (
             <div className="container d-flex justify-content-center">
-              <h2>{mensage}</h2>
+              <spam>{mensage}</spam>
             </div>
           )}
         </div>
@@ -90,33 +98,42 @@ const App = () => {
       return (
         <div>
           <Welcome nome={values.nome} />
-          {mensage.length > 0 && (
-            <div className="container d-flex justify-content-center">
-              <h2>{mensage}</h2>
-            </div>
-          )}
+        </div>
+      );
+    case "Visualizar":
+      return (
+        <div>
+          <Visualizar />
         </div>
       );
     case "Cadastro":
       return (
         <div>
-          <FormRegister onSubmit={handleRegister} setInputs={setInputs} />
           {mensage.length > 0 && (
             <div className="container d-flex justify-content-center">
-              <h2>{mensage}</h2>
+              <spam>{mensage}</spam>
             </div>
           )}
+          <FormRegister
+            onSubmit={handleRegister}
+            setInputs={setInputs}
+            onClickC={onClickC}
+          />
         </div>
       );
     default:
       return (
         <div>
-          <FormRegister onSubmit={handleRegister} setInputs={setInputs} />
           {mensage.length > 0 && (
             <div className="container d-flex justify-content-center">
-              <h2>{mensage}</h2>
+              <spam>{mensage}</spam>
             </div>
           )}
+          <FormRegister
+            onSubmit={handleRegister}
+            setInputs={setInputs}
+            onClickC={onClickC}
+          />
         </div>
       );
   }
