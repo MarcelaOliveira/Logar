@@ -25,12 +25,21 @@ const App = () => {
     localStorage.setItem("dbUser", JSON.stringify(dbUser));
   };
 
+  const login = (value) => {
+    localStorage.setItem("logged", JSON.stringify(value));
+  };
+
   useEffect(() => {
-    const logado = localStorage.getItem("logado");
-    const login = logado ? JSON.parse(logado) : "";
-    login.push(logged);
-    localStorage.setItem("logged", JSON.stringify(login));
-  }, [logged]);
+    if (localStorage.getItem("logged") != null) {
+      if (localStorage.getItem("logged") === "marcela@gmail.com") {
+        setTela("Visualizar");
+      } else {
+        setTela("Welcome");
+      }
+    } else {
+      setTela("Login");
+    }
+  }, []);
 
   const setInputs = (evento) => {
     const stat = { ...values };
@@ -63,6 +72,7 @@ const App = () => {
       } else {
         setTela("Welcome");
       }
+      login(values.email);
     } else {
       setTela("Login");
       setMensage("Verifique seu email e senha, ou cadastre-se!");
