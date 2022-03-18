@@ -13,7 +13,7 @@ const App = () => {
 
   const getLocalStorage = (usuario) => {
     const dbUserStorage = localStorage.getItem("dbUser");
-    const dbUser = dbUserStorage ? JSON.parse(dbUserStorage) : [{}];
+    const dbUser = dbUserStorage ? JSON.parse(dbUserStorage) : [];
     if (usuario) {
       return dbUser.find((user) => user.email === usuario.email);
     } else {
@@ -30,8 +30,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("logged") != null) {
-      if (localStorage.getItem("logged") === "marcela@gmail.com") {
+    let user = localStorage.getItem("logged");
+    if (user != null) {
+      if (user === "marcela@gmail.com") {
         setTela("Visualizar");
       } else {
         setTela("Welcome");
@@ -88,6 +89,13 @@ const App = () => {
     e.preventDefault();
     setTela("Login");
   };
+
+  const deslogar = (e) => {
+    e.preventDefault();
+    setTela("Login");
+    localStorage.removeItem("logged");
+  };
+  console.log(tela);
   switch (tela) {
     case "Login":
       return (
@@ -107,13 +115,14 @@ const App = () => {
     case "Welcome":
       return (
         <div>
-          <Welcome nome={values.nome} />
+          <Welcome nome={values.nome} deslogar={deslogar} />
         </div>
       );
     case "Visualizar":
+      const users = getLocalStorage();
       return (
         <div>
-          <Visualizar />
+          <Visualizar users={users} deslogar={deslogar} />
         </div>
       );
     case "Cadastro":
