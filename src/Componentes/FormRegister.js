@@ -63,7 +63,7 @@ const FormCadastro = (props) => (
             </div>
             <div className="mb-3">
               <Input
-                label="Senha"
+                label="Confirmar Senha"
                 type="password"
                 className="form-control"
                 name="confSenha"

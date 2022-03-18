@@ -21,12 +21,15 @@ const App = () => {
     }
   };
 
-  const setLocalStorage = (dbUser) => {
+  const setLocalStorage = (dbUser, value, nome) => {
     localStorage.setItem("dbUser", JSON.stringify(dbUser));
+    localStorage.setItem("logged", JSON.stringify(value));
+    localStorage.setItem("nome", JSON.stringify(nome));
   };
 
-  const login = (value) => {
+  const login = (value, nome) => {
     localStorage.setItem("logged", JSON.stringify(value));
+    localStorage.setItem("nome", JSON.stringify(nome));
   };
 
   useEffect(() => {
@@ -73,11 +76,19 @@ const App = () => {
       } else {
         setTela("Welcome");
       }
-      login(values.email);
+      login(values.email, values.nome);
     } else {
       setTela("Login");
       setMensage("Verifique seu email e senha, ou cadastre-se!");
     }
+  };
+
+  const editar = (edit) => {
+    edit.preventDefault();
+    const editarUsu = getLocalStorage(values);
+    editarUsu.push(values);
+    setLocalStorage(editarUsu);
+    setTela("Welcome");
   };
 
   const onClick = (e) => {
@@ -112,9 +123,18 @@ const App = () => {
         </div>
       );
     case "Welcome":
+      const nome = JSON.parse(localStorage.getItem("nome"));
+      const email = JSON.parse(localStorage.getItem("logged"));
+      const use = getLocalStorage({ email: email });
       return (
         <div>
-          <Welcome nome={values.nome} deslogar={deslogar} />
+          <Welcome
+            name={nome}
+            user={use}
+            deslogar={deslogar}
+            setInputs={setInputs}
+            onEditar={editar}
+          />
         </div>
       );
     case "Visualizar":
