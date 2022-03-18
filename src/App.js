@@ -32,7 +32,7 @@ const App = () => {
   useEffect(() => {
     let user = localStorage.getItem("logged");
     if (user != null) {
-      if (user === "marcela@gmail.com") {
+      if (JSON.parse(user) === "marcela@gmail.com") {
         setTela("Visualizar");
       } else {
         setTela("Welcome");
@@ -95,7 +95,6 @@ const App = () => {
     setTela("Login");
     localStorage.removeItem("logged");
   };
-  console.log(tela);
   switch (tela) {
     case "Login":
       return (

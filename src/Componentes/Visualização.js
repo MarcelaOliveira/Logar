@@ -11,18 +11,18 @@ export default function Visualização({ users, deslogar }) {
           <div className="table-responsive my-5">
             <table className="table">
               <thead>
-                <td scop="col">Nome</td>
-                <td scop="col">Email</td>
-                <td scop="col">Endereço</td>
-                <td scop="col">Telefone</td>
+                <th scop="col">Nome</th>
+                <th scop="col">Email</th>
+                <th scop="col">Endereço</th>
+                <th scop="col">Telefone</th>
               </thead>
               {users &&
                 users.map((user) => (
                   <tbody>
-                    <th>{user.nome}</th>
-                    <th>{user.email}</th>
-                    <th>{user.endereco}</th>
-                    <th>{user.telefone}</th>
+                    <td>{user.nome}</td>
+                    <td>{user.email}</td>
+                    <td>{user.endereco}</td>
+                    <td>{user.telefone}</td>
                   </tbody>
                 ))}
             </table>
