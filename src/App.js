@@ -6,7 +6,6 @@ import Visualizar from "./Componentes/Visualização";
 import "./App.css";
 
 const App = () => {
-  const [values, setValues] = useState([]);
   const [tela, setTela] = useState("Cadastro");
   const [logged, setLogged] = useState();
   const [mensage, setMensage] = useState({});
@@ -21,10 +20,12 @@ const App = () => {
     }
   };
 
-  const setLocalStorage = (dbUser, value, nome) => {
-    localStorage.setItem("dbUser", JSON.stringify(dbUser));
-    localStorage.setItem("logged", JSON.stringify(value));
-    localStorage.setItem("nome", JSON.stringify(nome));
+  const setLocalStorage = (dbUser) => {
+    if (typeof dbUser === "undefined") {
+      localStorage.setItem("dbUser", JSON.stringify([]));
+    } else {
+      localStorage.setItem("dbUser", JSON.stringify(dbUser));
+    }
   };
 
   const login = (value, nome) => {
@@ -45,20 +46,13 @@ const App = () => {
     }
   }, []);
 
-  const setInputs = (evento) => {
-    const stat = { ...values };
-    stat[evento.target.name] = evento.target.value;
-    setValues(stat);
-  };
-
   const handleRegister = (event) => {
-    event.preventDefault();
-    if (values.senha === values.confSenha) {
-      if (getLocalStorage(values)) {
+    if (event.senha === event.confSenha) {
+      if (getLocalStorage(event)) {
         setMensage("Usuário já cadastrado, faça login, ou verifique o email");
       } else {
         const dbUser = getLocalStorage();
-        dbUser.push(values);
+        dbUser.push(event);
         setLocalStorage(dbUser);
         setTela("Login");
       }
@@ -68,15 +62,14 @@ const App = () => {
   };
 
   const handleLogin = (e) => {
-    e.preventDefault();
-    if (getLocalStorage(values)) {
-      if (values.email === "marcela@gmail.com" && values.senha === "1234") {
-        setLogged(values.email);
+    if (getLocalStorage(e)) {
+      if (e.email === "marcela@gmail.com" && e.senha === "1234") {
+        setLogged(e.email);
         setTela("Visualizar");
       } else {
         setTela("Welcome");
       }
-      login(values.email, values.nome);
+      login(e.email, e.nome);
     } else {
       setTela("Login");
       setMensage("Verifique seu email e senha, ou cadastre-se!");
@@ -84,10 +77,15 @@ const App = () => {
   };
 
   const editar = (edit) => {
-    edit.preventDefault();
-    const editarUsu = getLocalStorage(values);
-    editarUsu.push(values);
-    setLocalStorage(editarUsu);
+    const editarUsu = getLocalStorage();
+    const user = () => {
+      editarUsu.forEach((element) => {
+        if (element.email === edit.userEdit) {
+          element = { ...edit };
+        }
+      });
+    };
+    setLocalStorage(user);
     setTela("Welcome");
   };
 
@@ -110,11 +108,7 @@ const App = () => {
     case "Login":
       return (
         <div>
-          <FormLogin
-            onSubmit={handleLogin}
-            setInputs={setInputs}
-            onClick={onClick}
-          />
+          <FormLogin onSubmit={handleLogin} onClick={onClick} />
           {mensage.length > 0 && (
             <div className="container d-flex justify-content-center">
               <spam>{mensage}</spam>
@@ -132,7 +126,6 @@ const App = () => {
             name={nome}
             user={use}
             deslogar={deslogar}
-            setInputs={setInputs}
             onEditar={editar}
           />
         </div>
@@ -152,11 +145,7 @@ const App = () => {
               <spam>{mensage}</spam>
             </div>
           )}
-          <FormRegister
-            onSubmit={handleRegister}
-            setInputs={setInputs}
-            onClickC={onClickC}
-          />
+          <FormRegister onSubmit={handleRegister} onClickC={onClickC} />
         </div>
       );
     default:
@@ -167,11 +156,7 @@ const App = () => {
               <spam>{mensage}</spam>
             </div>
           )}
-          <FormRegister
-            onSubmit={handleRegister}
-            setInputs={setInputs}
-            onClickC={onClickC}
-          />
+          <FormRegister onSubmit={handleRegister} onClickC={onClickC} />
         </div>
       );
   }
