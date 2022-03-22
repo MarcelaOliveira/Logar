@@ -1,7 +1,8 @@
 import React from "react";
 import ModalEditar from "./ModalEditar";
+import ModalDeletar from "./ModalDeletar";
 
-function Welcome({ name, user, deslogar, onEditar }) {
+function Welcome({ name, user, deslogar, onSubmit, onDeletar }) {
   return (
     <div>
       <div className="container my-2 d-flex justify-content-center">
@@ -32,18 +33,15 @@ function Welcome({ name, user, deslogar, onEditar }) {
                       className="inverted blue edit outline icon"
                       data-toggle="modal"
                       data-target="#EditarConta"
-                    >
-                      <a href=""></a>
-                    </i>
+                    ></i>
                     <i
                       className="inverted red trash icon"
                       data-toggle="modal"
                       data-target="#DeletarUser"
-                    >
-                      <a></a>
-                    </i>
+                    ></i>
                   </td>
-                  <ModalEditar userEdit={user.email} onEditar={onEditar} />
+                  <ModalEditar onSubmit={onSubmit} />
+                  <ModalDeletar onDeletar={onDeletar} />
                 </tbody>
               )}
             </table>

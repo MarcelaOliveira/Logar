@@ -28,6 +28,10 @@ const App = () => {
     }
   };
 
+  const removeLocalStorage = (usuario) => {
+    localStorage.removeItem(usuario);
+  };
+
   const login = (value, nome) => {
     localStorage.setItem("logged", JSON.stringify(value));
     localStorage.setItem("nome", JSON.stringify(nome));
@@ -76,17 +80,33 @@ const App = () => {
     }
   };
 
-  const editar = (edit) => {
-    const editarUsu = getLocalStorage();
-    const user = () => {
-      editarUsu.forEach((element) => {
-        if (element.email === edit.userEdit) {
-          element = { ...edit };
-        }
-      });
-    };
-    setLocalStorage(user);
-    setTela("Welcome");
+  const editar = (editar) => {
+    const users = getLocalStorage();
+    const usuario = JSON.parse(localStorage.getItem("logged"));
+    const newData = users.map((user) => {
+      if (user.email === usuario) {
+        return { ...editar };
+      } else {
+        return users;
+      }
+    });
+    setLocalStorage(newData);
+    login(editar.email, editar.nome);
+  };
+
+  const onDeletar = (deletar) => {
+    deletar.preventDefault();
+    const users = getLocalStorage();
+    const usuario = JSON.parse(localStorage.getItem("logged"));
+    const removeData = users.map((user) => {
+      if (user.email === usuario) {
+        return user;
+      } else {
+        return users;
+      }
+    });
+    localStorage.clear(removeData);
+    setTela("Login");
   };
 
   const onClick = (e) => {
@@ -103,6 +123,7 @@ const App = () => {
     e.preventDefault();
     setTela("Login");
     localStorage.removeItem("logged");
+    localStorage.removeItem("nome");
   };
   switch (tela) {
     case "Login":
@@ -119,14 +140,15 @@ const App = () => {
     case "Welcome":
       const nome = JSON.parse(localStorage.getItem("nome"));
       const email = JSON.parse(localStorage.getItem("logged"));
-      const use = getLocalStorage({ email: email });
+      const dados = getLocalStorage({ email: email });
       return (
         <div>
           <Welcome
             name={nome}
-            user={use}
+            user={dados}
             deslogar={deslogar}
-            onEditar={editar}
+            onSubmit={editar}
+            onDeletar={onDeletar}
           />
         </div>
       );

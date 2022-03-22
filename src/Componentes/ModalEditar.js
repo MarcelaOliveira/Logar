@@ -3,7 +3,7 @@ import Input from "./Input";
 
 export default function ModalEditar(props) {
   const [usersEdit, setUsersEdit] = useState();
-  const { nome, email, userEdit, endereco, telefone, senha, confSenha } = props;
+  const { nome, email, endereco, telefone, senha, confSenha } = props;
 
   const setInputs = (evento) => {
     const stat = { ...usersEdit };
@@ -13,7 +13,7 @@ export default function ModalEditar(props) {
 
   const onSave = (evente) => {
     evente.preventDefault();
-    props.onEditar(usersEdit);
+    props.onSubmit(usersEdit);
   };
 
   return (
@@ -27,8 +27,7 @@ export default function ModalEditar(props) {
             </button>
           </div>
           <div className="modal-body">
-            <form className="form vertical-alignC">
-              <Input type="hidden" name="userEdit" value={userEdit} />
+            <form className="form vertical-alignC" onSubmit={onSave}>
               <div className="form-group">
                 <div className="mb-3">
                   <Input
@@ -96,13 +95,12 @@ export default function ModalEditar(props) {
                     onChange={setInputs}
                   />
                 </div>
-                <div class="modal-footer">
+                <div className="modal-footer">
                   <input
                     type="submit"
                     value="Editar"
                     className="btn"
                     tabindex="1"
-                    onEditar={onSave}
                   />
                 </div>
                 <br />
