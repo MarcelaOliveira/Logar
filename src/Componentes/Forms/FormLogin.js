@@ -23,18 +23,6 @@ export default function FormLogin(props) {
             <form onSubmit={onSave}>
               <div className="mb-3">
                 <Input
-                  label="Nome"
-                  type="text"
-                  className="form-control"
-                  id="nome"
-                  name="nome"
-                  placeholder="Nome"
-                  value={props.nome}
-                  onChange={setInputs}
-                />
-              </div>
-              <div className="mb-3">
-                <Input
                   label="Email"
                   type="email"
                   className="form-control"

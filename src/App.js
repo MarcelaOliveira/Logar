@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import FormLogin from "./Componentes/FormLogin";
-import FormRegister from "./Componentes/FormRegister";
+import FormLogin from "./Componentes/Forms/FormLogin";
+import FormRegister from "./Componentes/Forms/FormRegister";
 import Welcome from "./Componentes/Welcome";
-import Visualizar from "./Componentes/Visualização";
+import View from "./Componentes/view";
+import Styled from "styled-components";
 import "./App.css";
 
 const App = () => {
-  const [tela, setTela] = useState("Cadastro");
+  const [screen, setScreen] = useState("Register");
   const [logged, setLogged] = useState();
   const [mensage, setMensage] = useState({});
 
@@ -28,25 +29,20 @@ const App = () => {
     }
   };
 
-  const removeLocalStorage = (usuario) => {
-    localStorage.removeItem(usuario);
-  };
-
-  const login = (value, nome) => {
-    localStorage.setItem("logged", JSON.stringify(value));
-    localStorage.setItem("nome", JSON.stringify(nome));
+  const login = (email) => {
+    localStorage.setItem("logged", JSON.stringify(email));
   };
 
   useEffect(() => {
     let user = localStorage.getItem("logged");
     if (user != null) {
       if (JSON.parse(user) === "marcela@gmail.com") {
-        setTela("Visualizar");
+        setScreen("Visualizar");
       } else {
-        setTela("Welcome");
+        setScreen("Welcome");
       }
     } else {
-      setTela("Login");
+      setScreen("Login");
     }
   }, []);
 
@@ -58,7 +54,7 @@ const App = () => {
         const dbUser = getLocalStorage();
         dbUser.push(event);
         setLocalStorage(dbUser);
-        setTela("Login");
+        setScreen("Login");
       }
     } else {
       setMensage("Senha e confirmar senha não coicidem");
@@ -69,18 +65,18 @@ const App = () => {
     if (getLocalStorage(e)) {
       if (e.email === "marcela@gmail.com" && e.senha === "1234") {
         setLogged(e.email);
-        setTela("Visualizar");
+        setScreen("View");
       } else {
-        setTela("Welcome");
+        setScreen("Welcome");
       }
-      login(e.email, e.nome);
+      login(e.email);
     } else {
-      setTela("Login");
+      setScreen("Login");
       setMensage("Verifique seu email e senha, ou cadastre-se!");
     }
   };
 
-  const editar = (editar) => {
+  const handleEditar = (editar) => {
     const users = getLocalStorage();
     const usuario = JSON.parse(localStorage.getItem("logged"));
     const newData = users.map((user) => {
@@ -94,38 +90,33 @@ const App = () => {
     login(editar.email, editar.nome);
   };
 
-  const onDeletar = (deletar) => {
+  const handleDeletar = (deletar) => {
     deletar.preventDefault();
     const users = getLocalStorage();
     const usuario = JSON.parse(localStorage.getItem("logged"));
-    const removeData = users.map((user) => {
-      if (user.email === usuario) {
-        return user;
-      } else {
-        return users;
-      }
+    const newData = users.filter((user) => {
+      return user.email !== usuario;
     });
-    localStorage.clear(removeData);
-    setTela("Login");
+    setLocalStorage(newData);
+    localStorage.removeItem("logged");
+    setScreen("Login");
   };
 
   const onClick = (e) => {
     e.preventDefault();
-    setTela("Cadastro");
-  };
-
-  const onClickC = (e) => {
-    e.preventDefault();
-    setTela("Login");
+    if (screen === "Login") {
+      setScreen("Register");
+    } else {
+      setScreen("Login");
+    }
   };
 
   const deslogar = (e) => {
     e.preventDefault();
-    setTela("Login");
+    setScreen("Login");
     localStorage.removeItem("logged");
-    localStorage.removeItem("nome");
   };
-  switch (tela) {
+  switch (screen) {
     case "Login":
       return (
         <div>
@@ -138,28 +129,26 @@ const App = () => {
         </div>
       );
     case "Welcome":
-      const nome = JSON.parse(localStorage.getItem("nome"));
       const email = JSON.parse(localStorage.getItem("logged"));
-      const dados = getLocalStorage({ email: email });
+      const data = getLocalStorage({ email: email });
       return (
         <div>
           <Welcome
-            name={nome}
-            user={dados}
+            user={data}
             deslogar={deslogar}
-            onSubmit={editar}
-            onDeletar={onDeletar}
+            onSubmit={handleEditar}
+            onDeletar={handleDeletar}
           />
         </div>
       );
-    case "Visualizar":
+    case "View":
       const users = getLocalStorage();
       return (
         <div>
-          <Visualizar users={users} deslogar={deslogar} />
+          <View users={users} deslogar={deslogar} />
         </div>
       );
-    case "Cadastro":
+    case "Register":
       return (
         <div>
           {mensage.length > 0 && (
@@ -167,7 +156,7 @@ const App = () => {
               <spam>{mensage}</spam>
             </div>
           )}
-          <FormRegister onSubmit={handleRegister} onClickC={onClickC} />
+          <FormRegister onSubmit={handleRegister} onClick={onClick} />
         </div>
       );
     default:
@@ -178,7 +167,7 @@ const App = () => {
               <spam>{mensage}</spam>
             </div>
           )}
-          <FormRegister onSubmit={handleRegister} onClickC={onClickC} />
+          <FormRegister onSubmit={handleRegister} onClick={onClick} />
         </div>
       );
   }

@@ -1,12 +1,12 @@
 import React from "react";
-import ModalEditar from "./ModalEditar";
-import ModalDeletar from "./ModalDeletar";
+import ModalEditar from "./Modals/ModalEditar";
+import ModalDeletar from "./Modals/ModalDeletar";
 
-function Welcome({ name, user, deslogar, onSubmit, onDeletar }) {
+function Welcome({ user, deslogar, onSubmit, onDeletar }) {
   return (
     <div>
       <div className="container my-2 d-flex justify-content-center">
-        <h2>Welcome, {name}!</h2>
+        <h2>Welcome, {user.nome}!</h2>
       </div>
       <div className="container mt-3">
         <div className="my-1 px-5 bg-white rounded shadow-sm">
@@ -40,7 +40,7 @@ function Welcome({ name, user, deslogar, onSubmit, onDeletar }) {
                       data-target="#DeletarUser"
                     ></i>
                   </td>
-                  <ModalEditar onSubmit={onSubmit} />
+                  <ModalEditar {...user} onSubmit={onSubmit} />
                   <ModalDeletar onDeletar={onDeletar} />
                 </tbody>
               )}

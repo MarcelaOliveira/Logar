@@ -1,27 +1,31 @@
-import React, { useState } from "react";
-import Input from "./Input";
+import React, { useState, useEffect } from "react";
+import Input from "../Forms/Input";
 
 export default function ModalEditar(props) {
-  const [usersEdit, setUsersEdit] = useState();
+  const [userEdit, setUserEdit] = useState({});
   const { nome, email, endereco, telefone, senha, confSenha } = props;
 
   const setInputs = (evento) => {
-    const stat = { ...usersEdit };
+    const stat = { ...userEdit };
     stat[evento.target.name] = evento.target.value;
-    setUsersEdit(stat);
+    setUserEdit(stat);
   };
 
   const onSave = (evente) => {
     evente.preventDefault();
-    props.onSubmit(usersEdit);
+    props.onSubmit(userEdit);
   };
+
+  useEffect(() => {
+    setUserEdit({ nome, email, endereco, telefone, senha, confSenha });
+  }, [props]);
 
   return (
     <div id="EditarConta" className="modal fade" role="dialog">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h4 className="modal-title">Editar Fusuário</h4>
+            <h4 className="modal-title">Editar usuário</h4>
             <button type="button" className="close" data-dismiss="modal">
               &times;
             </button>
@@ -36,7 +40,7 @@ export default function ModalEditar(props) {
                     className="form-control"
                     name="nome"
                     placeholder="Nome"
-                    value={nome}
+                    value={userEdit.nome}
                     onChange={setInputs}
                   />
                 </div>
@@ -47,7 +51,7 @@ export default function ModalEditar(props) {
                     className="form-control"
                     name="email"
                     placeholder="name@example.com"
-                    value={email}
+                    value={userEdit.email}
                     onChange={setInputs}
                   />
                 </div>
@@ -58,7 +62,7 @@ export default function ModalEditar(props) {
                     type="text"
                     name="endereco"
                     placeholder="Rua: Tal,1234"
-                    value={endereco}
+                    value={userEdit.endereco}
                     onChange={setInputs}
                   />
                 </div>
@@ -69,7 +73,7 @@ export default function ModalEditar(props) {
                     className="form-control"
                     name="telefone"
                     placeholder="(DD)94834-4456"
-                    value={telefone}
+                    value={userEdit.telefone}
                     onChange={setInputs}
                   />
                 </div>
@@ -80,7 +84,7 @@ export default function ModalEditar(props) {
                     className="form-control"
                     name="senha"
                     placeholder="Senha"
-                    value={senha}
+                    value={userEdit.senha}
                     onChange={setInputs}
                   />
                 </div>
@@ -91,7 +95,7 @@ export default function ModalEditar(props) {
                     className="form-control"
                     name="confSenha"
                     placeholder="Confirmar Senha"
-                    value={confSenha}
+                    value={userEdit.confSenha}
                     onChange={setInputs}
                   />
                 </div>

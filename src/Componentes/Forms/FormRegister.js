@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "./Input";
 
 export default function FormCadastro(props) {
-  const { nome, email, endereco, telefone, senha, confSenha, onClickC } = props;
+  const { nome, email, endereco, telefone, senha, confSenha, onClick } = props;
   const [values, setValues] = useState([]);
   const setInputs = (evento) => {
     const stat = { ...values };
@@ -96,7 +96,7 @@ export default function FormCadastro(props) {
       <div className="container d-flex justify-content-center">
         <div className="card">
           <div className="card-body">
-            Já é cadastrado <button onClick={onClickC}>Logar</button>
+            Já é cadastrado <button onClick={onClick}>Logar</button>
           </div>
         </div>
       </div>
