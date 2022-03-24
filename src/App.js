@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import FormLogin from "./Componentes/Forms/FormLogin";
 import FormRegister from "./Componentes/Forms/FormRegister";
 import Welcome from "./Componentes/Welcome";
-import View from "./Componentes/view";
-import Styled from "styled-components";
 import "./App.css";
+import View from "./Componentes/View";
 
 const App = () => {
   const [screen, setScreen] = useState("Register");
@@ -150,7 +149,7 @@ const App = () => {
       );
     case "Register":
       return (
-        <div>
+        <div className="register">
           {mensage.length > 0 && (
             <div className="container d-flex justify-content-center">
               <spam>{mensage}</spam>
@@ -161,7 +160,7 @@ const App = () => {
       );
     default:
       return (
-        <div>
+        <div className="register">
           {mensage.length > 0 && (
             <div className="container d-flex justify-content-center">
               <spam>{mensage}</spam>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Input from "../Forms/Input";
+import Input from "../Forms/InputComponent";
 
 export default function ModalEditar(props) {
   const [userEdit, setUserEdit] = useState({});

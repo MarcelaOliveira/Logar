@@ -1,9 +1,22 @@
 import React, { useState } from "react";
-import Input from "./Input";
+import { StyledForms } from "./StyledForms";
+import { Input, Layout, Button } from "antd";
+import { Row, Col, Card } from "antd";
+import {
+  UserOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  HomeOutlined,
+  UnlockOutlined,
+} from "@ant-design/icons";
+import "antd/dist/antd.css";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 export default function FormCadastro(props) {
   const { nome, email, endereco, telefone, senha, confSenha, onClick } = props;
+  const { Content } = Layout;
   const [values, setValues] = useState([]);
+  const [buttonState, setButtonState] = useState();
   const setInputs = (evento) => {
     const stat = { ...values };
     stat[evento.target.name] = evento.target.value;
@@ -15,91 +28,126 @@ export default function FormCadastro(props) {
     props.onSubmit(values);
   };
 
+  const handleSizeChange = (e) => {
+    setButtonState({ size: e.target.value });
+  };
+  const size = buttonState;
   return (
-    <div>
-      <h1 className="text-center h1 mt-2 fw-normal">Register</h1>
-      <div className="container d-flex justify-content-center">
-        <div className="card mb-2 w-50">
-          <div className="card-body">
-            <form onSubmit={onSave}>
-              <div className="mb-3">
-                <Input
-                  label="Nome"
-                  type="text"
-                  className="form-control"
-                  name="nome"
-                  placeholder="Nome"
-                  value={nome}
-                  onChange={setInputs}
-                />
+    <StyledForms>
+      <center>
+        <Card
+          type="inner"
+          style={{ marginTop: 80, width: 1000 }}
+          justify="space-around"
+          align="middle"
+        >
+          <Row justify="space-around" align="middle">
+            <Col
+              className="gutter-row"
+              justify="space-around"
+              align="middle"
+              span={8}
+            >
+              <img src="https://img.freepik.com/free-vector/women-freelance-african-girl-headphones-with-laptop-sitting-table-concept-illustration-working-from-home-studying-education-communication-healthy-lifestyle-vector-flat-style_189033-266.jpg?size=338&ext=jpg" />
+            </Col>
+            <Col
+              className="gutter-row"
+              justify="space-around"
+              align="middle"
+              span={10}
+            >
+              <h1>Register</h1>
+              <form onSubmit={onSave}>
+                <div>
+                  <Input
+                    prefix={<UserOutlined />}
+                    className="input"
+                    type="text"
+                    name="nome"
+                    placeholder="Nome"
+                    value={nome}
+                    onChange={setInputs}
+                  />
+                </div>
+                <br />
+                <div>
+                  <Input
+                    prefix={<MailOutlined />}
+                    className="input"
+                    type="email"
+                    name="email"
+                    placeholder="name@example.com"
+                    value={email}
+                    onChange={setInputs}
+                  />
+                </div>
+                <br />
+                <div>
+                  <Input
+                    prefix={<HomeOutlined />}
+                    className="input"
+                    name="endereco"
+                    placeholder="Rua: Tal,1234"
+                    value={endereco}
+                    onChange={setInputs}
+                  />
+                </div>
+                <br />
+                <div>
+                  <Input
+                    prefix={<PhoneOutlined />}
+                    className="input"
+                    name="telefone"
+                    placeholder="(DD)94834-4456"
+                    value={telefone}
+                    onChange={setInputs}
+                  />
+                </div>
+                <br />
+                <div>
+                  <Input.Password
+                    prefix={<UnlockOutlined />}
+                    className="input"
+                    label="Senha"
+                    type="password"
+                    name="senha"
+                    placeholder="Senha"
+                    iconRender={(visible) =>
+                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                    }
+                    value={senha}
+                    onChange={setInputs}
+                  />
+                </div>
+                <br />
+                <div>
+                  <Input.Password
+                    prefix={<UnlockOutlined />}
+                    className="input"
+                    label="Confirmar Senha"
+                    type="password"
+                    name="confSenha"
+                    placeholder="Confirmar Senha"
+                    iconRender={(visible) =>
+                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                    }
+                    value={confSenha}
+                    onChange={setInputs}
+                  />
+                </div>
+                <br />
+                <Button className="register">Register</Button>
+              </form>
+              <div>
+                Já é cadastrado?
+                <Button type="link" size={size} onClick={onClick}>
+                  Login
+                </Button>
               </div>
-              <div className="mb-3">
-                <Input
-                  label="Email"
-                  type="email"
-                  className="form-control"
-                  name="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={setInputs}
-                />
-              </div>
-              <div className="mb-3">
-                <Input
-                  label="Endereeço"
-                  className="form-control"
-                  name="endereco"
-                  placeholder="Rua: Tal,1234"
-                  value={endereco}
-                  onChange={setInputs}
-                />
-              </div>
-              <div className="mb-3">
-                <Input
-                  label="Telefone"
-                  className="form-control"
-                  name="telefone"
-                  placeholder="(DD)94834-4456"
-                  value={telefone}
-                  onChange={setInputs}
-                />
-              </div>
-              <div className="mb-3">
-                <Input
-                  label="Senha"
-                  type="password"
-                  className="form-control"
-                  name="senha"
-                  placeholder="Senha"
-                  value={senha}
-                  onChange={setInputs}
-                />
-              </div>
-              <div className="mb-3">
-                <Input
-                  label="Confirmar Senha"
-                  type="password"
-                  className="form-control"
-                  name="confSenha"
-                  placeholder="Confirmar Senha"
-                  value={confSenha}
-                  onChange={setInputs}
-                />
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Register
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div className="container d-flex justify-content-center">
-        <div className="card">
-          <div className="card-body">
-            Já é cadastrado <button onClick={onClick}>Logar</button>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Col>
+          </Row>
+        </Card>
+      </center>
+    </StyledForms>
   );
 }
