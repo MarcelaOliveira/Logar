@@ -1,41 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
+import { Table, Row, Col, Button, Card } from "antd";
+import "antd/dist/antd.css";
 
-export default function Visualização({ users, deslogar }) {
+export default function ViwAdm({ users, deslogar }) {
+  const [buttonState, setButtonState] = useState();
+  let data = [];
+  const handleSizeChange = (e) => {
+    setButtonState({ size: e.target.value });
+  };
+  const size = buttonState;
+  const columns = [
+    {
+      title: "Nome",
+      dataIndex: "nome",
+      key: "nome",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Endereço",
+      dataIndex: "endereco",
+      key: "endereco",
+    },
+    {
+      title: "Telefone",
+      key: "telefone",
+      dataIndex: "telefone",
+    },
+  ];
+
+  // eslint-disable-next-line no-lone-blocks
+  {
+    users &&
+      users.map((user) =>
+        data.push({
+          key: user.nome,
+          nome: user.nome,
+          email: user.email,
+          endereco: user.endereco,
+          telefone: user.telefone,
+        })
+      )
+  }
+
   return (
-    <div>
-      <div className="container mt-3">
-        <div className="my-3 px-5 py-5 bg-white rounded shadow-sm">
-          <div className="col-12">
-            <h1 className="text-center">Usuários cadastrados</h1>
-          </div>
-          <div className="table-responsive my-5">
-            <table className="table">
-              <thead>
-                <th scop="col">Nome</th>
-                <th scop="col">Email</th>
-                <th scop="col">Endereço</th>
-                <th scop="col">Telefone</th>
-              </thead>
-              {users &&
-                users.map((user) => (
-                  <tbody>
-                    <td>{user.nome}</td>
-                    <td>{user.email}</td>
-                    <td>{user.endereco}</td>
-                    <td>{user.telefone}</td>
-                  </tbody>
-                ))}
-            </table>
-          </div>
-        </div>
+    <div style={{ marginTop: 20 }}>
+      <div justify="space-around" align="middle">
+        <h1 style={{color: '#00ACEE'}}>Usuarios cadastrados</h1>
       </div>
-      <div className="container d-flex justify-content-center">
-        <div className="card">
-          <div className="card-body">
-            Deseja sair? <button onClick={deslogar}>Sair</button>
-          </div>
-        </div>
-      </div>
+      <Row justify="space-around" align="middle">
+        <Col span={18}>
+          <Table columns={columns} dataSource={data} />
+        </Col>
+      </Row>
+
+      <center>
+        <Card
+          type="inner"
+          style={{ marginTop: 20, width: 200 }}
+          justify="space-around"
+          align="middle"
+        >
+          Deseja sair?
+          <Button type="link" size={size} onClick={deslogar}>
+            Sair
+          </Button>
+        </Card>
+      </center>
     </div>
   );
 }

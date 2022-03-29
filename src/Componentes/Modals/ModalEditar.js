@@ -25,11 +25,8 @@ export default function ModalEditar(props) {
   };
 
   const onSave = (evente) => {
-    if (evente.senha === evente.confSenha) {
-      props.onFinish(userEdit);
-    } else {
-      setErro("Senha e confirmar senha devem ser iguais!");
-    }
+    evente.preventDefault9();
+    props.onFinish(userEdit);
   };
   const handleSizeChange = (e) => {
     setButtonState({ size: e.target.value });
@@ -40,6 +37,7 @@ export default function ModalEditar(props) {
   };
 
   const size = buttonState;
+
   useEffect(() => {
     setUserEdit({ nome, email, endereco, telefone, senha, confSenha });
   }, [props]);
@@ -54,141 +52,134 @@ export default function ModalEditar(props) {
       >
         <StyledForms>
           <center>
-              <Form
-                onFinish={onSave}
-                autoComplete="off"
-                onFinishFailed={onFinishFailed}
+            <Form
+              onFinish={onSave}
+              autoComplete="off"
+              onFinishFailed={onFinishFailed}
+            >
+              <Form.Item
+                name="nome"
+                value={userEdit.nome}
+                onChange={setInputs}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor preencha todos os campos!",
+                  },
+                ]}
               >
-                <Form.Item
+                <Input
+                  prefix={<UserOutlined />}
                   name="nome"
-                  value={userEdit.nome}
-                  onChange={setInputs}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor preencha todos os campos!",
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<UserOutlined />}
-                    name="nome"
-                    className="input"
-                    type="text"
-                    placeholder="Nome"
-                  />
-                </Form.Item>
-                <Form.Item
+                  className="input"
+                  type="text"
+                />
+              </Form.Item>
+              <Form.Item
+                name="email"
+                value={userEdit.email}
+                onChange={setInputs}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor preencha todos os campos!",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined />}
                   name="email"
-                  value={userEdit.email}
-                  onChange={setInputs}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor preencha todos os campos!",
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<MailOutlined />}
-                    name="email"
-                    className="input"
-                    type="email"
-                    placeholder="name@example.com"
-                  />
-                </Form.Item>
-                <Form.Item
+                  className="input"
+                  type="email"
+                />
+              </Form.Item>
+              <Form.Item
+                name="endereco"
+                value={userEdit.endereco}
+                onChange={setInputs}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor preencha todos os campos!",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<HomeOutlined />}
                   name="endereco"
-                  value={userEdit.endereco}
-                  onChange={setInputs}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor preencha todos os campos!",
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<HomeOutlined />}
-                    name="endereco"
-                    className="input"
-                    placeholder="Rua: Tal,1234"
-                  />
-                </Form.Item>
-                <Form.Item
+                  className="input"
+                />
+              </Form.Item>
+              <Form.Item
+                name="telefone"
+                value={userEdit.telefone}
+                onChange={setInputs}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor preencha todos os campos!",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<PhoneOutlined />}
                   name="telefone"
-                  value={userEdit.telefone}
-                  onChange={setInputs}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor preencha todos os campos!",
-                    },
-                  ]}
-                >
-                  <Input
-                    prefix={<PhoneOutlined />}
-                    name="telefone"
-                    type="text"
-                    className="input"
-                    placeholder="(DD)94834-4456"
-                  />
-                </Form.Item>
-                <Form.Item
+                  type="text"
+                  className="input"
+                />
+              </Form.Item>
+              <Form.Item
+                name="senha"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+                value={userEdit.senha}
+                onChange={setInputs}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor preencha todos os campos!",
+                  },
+                ]}
+              >
+                <Input.Password
+                  prefix={<UnlockOutlined />}
                   name="senha"
-                  placeholder="Senha"
-                  iconRender={(visible) =>
-                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                  }
-                  value={userEdit.senha}
-                  onChange={setInputs}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor preencha todos os campos!",
-                    },
-                  ]}
-                >
-                  <Input.Password
-                    prefix={<UnlockOutlined />}
-                    name="senha"
-                    className="input"
-                    type="password"
-                    placeholder="Senha"
-                  />
-                </Form.Item>
+                  className="input"
+                  type="password"
+                />
+              </Form.Item>
 
-                <Form.Item
+              <Form.Item
+                name="confSenha"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+                value={userEdit.confSenha}
+                onChange={setInputs}
+                rules={[
+                  {
+                    required: true,
+                    message: "Por favor preencha todos os campos!",
+                  },
+                ]}
+              >
+                <Input.Password
+                  prefix={<UnlockOutlined />}
                   name="confSenha"
-                  iconRender={(visible) =>
-                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                  }
-                  value={userEdit.confSenha}
-                  onChange={setInputs}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Por favor preencha todos os campos!",
-                    },
-                  ]}
-                >
-                  <Input.Password
-                    prefix={<UnlockOutlined />}
-                    name="confSenha"
-                    className="input"
-                    type="password"
-                    placeholder="Confirmar Senha"
-                  />
-                </Form.Item>
-                {erro.length > 0 && (
-                  <center>
-                    <spam>{erro}</spam>
-                  </center>
-                )}
-                <Button htmlType="submit" className="register">
-                  Register
-                </Button>
-              </Form>
+                  className="input"
+                  type="password"
+                />
+              </Form.Item>
+              {erro.length > 0 && (
+                <center>
+                  <spam>{erro}</spam>
+                </center>
+              )}
+              <Button htmlType="submit" className="register">
+                Register
+              </Button>
+            </Form>
           </center>
         </StyledForms>
       </Modal>

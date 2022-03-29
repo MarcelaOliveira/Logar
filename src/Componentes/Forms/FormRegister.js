@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyledForms } from "./StyledForms";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Checkbox } from "antd";
 import { Row, Col, Card } from "antd";
 import {
   UserOutlined,
@@ -41,6 +41,7 @@ export default function FormCadastro(props) {
   };
 
   const size = buttonState;
+  console.log(values);
   return (
     <StyledForms>
       <center>
@@ -200,6 +201,9 @@ export default function FormCadastro(props) {
                     <spam>{erro}</spam>
                   </center>
                 )}
+                <Checkbox name="adm" value="adm" onChange={setInputs}>
+                  Sou administrador
+                </Checkbox>
                 <Button htmlType="submit" className="register">
                   Register
                 </Button>

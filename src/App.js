@@ -46,6 +46,12 @@ const App = () => {
       (user) => user.email === userSenha.email && user.senha === userSenha.senha
     );
   };
+  const confirmAdm = (user) => {
+    const dbUser = getLocalStorage();
+    return dbUser.find(
+      (user) => user.email === user.email && user.senha === "adm"
+    );
+  };
 
   const handleRegister = (event) => {
     if (getLocalStorage(event)) {
@@ -65,7 +71,7 @@ const App = () => {
   const handleLogin = (e) => {
     if (confirmSenha(e)) {
       localStorage.setItem("logged", JSON.stringify(e.email));
-      if (e.email === "marcela@gmail.com" && e.senha === "1234") {
+      if (confirmAdm(e)) {
         setScreen("ViewAdm");
       } else {
         setScreen("Welcome");

@@ -4,7 +4,6 @@ import ModalDeletar from "./Modals/ModalDeletar";
 import { Table, Row, Col, Button, Card } from "antd";
 import { FormOutlined, DeleteOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import "antd/dist/antd.css";
 
 function Welcome({ user, deslogar, onSubmit, onDeletar }) {
   const [buttonState, setButtonState] = useState();
@@ -64,7 +63,7 @@ function Welcome({ user, deslogar, onSubmit, onDeletar }) {
       key: "deletar",
       dataIndex: "deletar",
       render: (text) => (
-        <a onClick={showModalDelete}>
+        <a style={{ color: "red" }} onClick={showModalDelete}>
           <DeleteOutlined />
         </a>
       ),
@@ -84,7 +83,7 @@ function Welcome({ user, deslogar, onSubmit, onDeletar }) {
   return (
     <div style={{ marginTop: 20 }}>
       <div justify="space-around" align="middle">
-        <h1>Welcome, {user.nome}</h1>
+        <h1 style={{ color: "#00ACEE" }}>Welcome, {user.nome}</h1>
       </div>
       <Row justify="space-around" align="middle">
         <Col span={18}>
@@ -95,7 +94,11 @@ function Welcome({ user, deslogar, onSubmit, onDeletar }) {
             isModalVisible={isModalVisible}
             handleCancel={handleCancel}
           />
-          <ModalDeletar isModalDeleteVisible={isModalDeleteVisible} onSubmit={onDeletar} handleCancel={handleCancel}/>
+          <ModalDeletar
+            isModalDeleteVisible={isModalDeleteVisible}
+            onSubmit={onDeletar}
+            handleCancel={handleCancel}
+          />
         </Col>
       </Row>
 
