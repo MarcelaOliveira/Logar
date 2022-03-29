@@ -3,13 +3,11 @@ import FormLogin from "./Componentes/Forms/FormLogin";
 import FormRegister from "./Componentes/Forms/FormRegister";
 import Welcome from "./Componentes/Welcome";
 import ViewAdm from "./Componentes/ViewAdm";
-import { notification, Divider, Space } from "antd";
+import { notification } from "antd";
 import "./App.css";
 
 const App = () => {
   const [screen, setScreen] = useState("Register");
-  const [logged, setLogged] = useState();
-  const [mensage, setMensage] = useState({});
 
   const getLocalStorage = (usuario) => {
     const dbUserStorage = localStorage.getItem("dbUser");
@@ -19,13 +17,6 @@ const App = () => {
     } else {
       return dbUser;
     }
-  };
-
-  const confirmSenha = (userSenha) => {
-    const dbUser = getLocalStorage();
-    return dbUser.find(
-      (user) => user.email === userSenha.email && user.senha === userSenha.senha
-    );
   };
 
   const setLocalStorage = (dbUser) => {
@@ -49,9 +40,20 @@ const App = () => {
     }
   }, []);
 
+  const confirmSenha = (userSenha) => {
+    const dbUser = getLocalStorage();
+    return dbUser.find(
+      (user) => user.email === userSenha.email && user.senha === userSenha.senha
+    );
+  };
+
   const handleRegister = (event) => {
     if (getLocalStorage(event)) {
-      setMensage("Usuário já cadastrado, faça login, ou verifique o email");
+      setScreen("Register");
+      notification.error({
+        message: `Cadastro já existente`,
+        description: "Verifique seu email, ou faça login",
+      });
     } else {
       const dbUser = getLocalStorage();
       dbUser.push(event);
@@ -62,16 +64,18 @@ const App = () => {
 
   const handleLogin = (e) => {
     if (confirmSenha(e)) {
+      localStorage.setItem("logged", JSON.stringify(e.email));
       if (e.email === "marcela@gmail.com" && e.senha === "1234") {
-        setLogged(e.email);
         setScreen("ViewAdm");
       } else {
         setScreen("Welcome");
       }
-      localStorage.setItem("logged", JSON.stringify(e.email));
     } else {
       setScreen("Login");
-      setMensage("Verifique seu email e senha, ou cadastre-se!");
+      notification.error({
+        message: `Login mal sussecido`,
+        description: "Verifique seu email e senha",
+      });
     }
   };
   const handleEditar = (editar) => {
@@ -114,16 +118,12 @@ const App = () => {
     setScreen("Login");
     localStorage.removeItem("logged");
   };
+
   switch (screen) {
     case "Login":
       return (
         <div>
           <FormLogin onSubmit={handleLogin} onClick={onClick} />
-          {mensage.length > 0 &&
-            notification.info({
-              message: `Mensagem de erro`,
-              description: { mensagem: mensage },
-            })}
         </div>
       );
     case "Welcome":

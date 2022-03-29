@@ -1,14 +1,31 @@
 import React, { useState } from "react";
 import ModalEditar from "./Modals/ModalEditar";
 import ModalDeletar from "./Modals/ModalDeletar";
-import { Table, Tag, Space, Button, Card } from "antd";
+import { Table, Row, Col, Button, Card } from "antd";
+import { FormOutlined, DeleteOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
 import "antd/dist/antd.css";
 
 function Welcome({ user, deslogar, onSubmit, onDeletar }) {
   const [buttonState, setButtonState] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalDeleteVisible, setIsModalDleteVisible] = useState(false);
+
   const handleSizeChange = (e) => {
     setButtonState({ size: e.target.value });
   };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  const showModalDelete = () => {
+    setIsModalDleteVisible(true);
+  };
+
   const size = buttonState;
 
   const columns = [
@@ -24,8 +41,8 @@ function Welcome({ user, deslogar, onSubmit, onDeletar }) {
     },
     {
       title: "Endereço",
-      dataIndex: "endereço",
-      key: "endereço",
+      dataIndex: "endereco",
+      key: "endereco",
     },
     {
       title: "Telefone",
@@ -33,24 +50,55 @@ function Welcome({ user, deslogar, onSubmit, onDeletar }) {
       dataIndex: "telefone",
     },
     {
-      title: "Ações",
-      key: "ações",
+      title: "Editar",
+      key: "editar",
+      dataIndex: "editar",
+      render: (text) => (
+        <a onClick={showModal}>
+          <FormOutlined />
+        </a>
+      ),
+    },
+    {
+      title: "Deletar",
+      key: "deletar",
+      dataIndex: "deletar",
+      render: (text) => (
+        <a onClick={showModalDelete}>
+          <DeleteOutlined />
+        </a>
+      ),
     },
   ];
 
   const data = [
     {
       key: "1",
-      nome: { nome: user.nome },
-      email: { email: user.email },
-      endereço: { endereço: user.endereço },
-      telefone: { telefone: user.telefone },
+      nome: user.nome,
+      email: user.email,
+      endereco: user.endereco,
+      telefone: user.telefone,
     },
   ];
 
   return (
-    <div className="gutter-row" justify="space-around" align="middle" span={8}>
-      <Table columns={columns} dataSource={data} />
+    <div style={{ marginTop: 20 }}>
+      <div justify="space-around" align="middle">
+        <h1>Welcome, {user.nome}</h1>
+      </div>
+      <Row justify="space-around" align="middle">
+        <Col span={18}>
+          <Table columns={columns} dataSource={data} />
+          <ModalEditar
+            {...user}
+            onSubmit={onSubmit}
+            isModalVisible={isModalVisible}
+            handleCancel={handleCancel}
+          />
+          <ModalDeletar isModalDeleteVisible={isModalDeleteVisible} onSubmit={onDeletar} handleCancel={handleCancel}/>
+        </Col>
+      </Row>
+
       <center>
         <Card
           type="inner"

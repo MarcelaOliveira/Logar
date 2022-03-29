@@ -8,9 +8,10 @@ import {
   PhoneOutlined,
   HomeOutlined,
   UnlockOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 export default function FormCadastro(props) {
   const { nome, email, endereco, telefone, senha, confSenha, onClick } = props;

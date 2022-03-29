@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from "react";
-import Input from "../Forms/InputComponent";
+import { StyledForms } from "../Forms/StyledForms";
+import { Modal, Form, Input, Button } from "antd";
+import {
+  UserOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  HomeOutlined,
+  UnlockOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from "@ant-design/icons";
+import "antd/dist/antd.css";
 
 export default function ModalEditar(props) {
   const [userEdit, setUserEdit] = useState({});
+  const [erro, setErro] = useState({});
+  const [buttonState, setButtonState] = useState();
   const { nome, email, endereco, telefone, senha, confSenha } = props;
 
   const setInputs = (evento) => {
@@ -12,107 +25,173 @@ export default function ModalEditar(props) {
   };
 
   const onSave = (evente) => {
-    evente.preventDefault();
-    props.onSubmit(userEdit);
+    if (evente.senha === evente.confSenha) {
+      props.onFinish(userEdit);
+    } else {
+      setErro("Senha e confirmar senha devem ser iguais!");
+    }
+  };
+  const handleSizeChange = (e) => {
+    setButtonState({ size: e.target.value });
   };
 
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const size = buttonState;
   useEffect(() => {
     setUserEdit({ nome, email, endereco, telefone, senha, confSenha });
   }, [props]);
 
   return (
-    <div id="EditarConta" className="modal fade" role="dialog">
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h4 className="modal-title">Editar usuário</h4>
-            <button type="button" className="close" data-dismiss="modal">
-              &times;
-            </button>
-          </div>
-          <div className="modal-body">
-            <form className="form vertical-alignC" onSubmit={onSave}>
-              <div className="form-group">
-                <div className="mb-3">
+    <div>
+      <Modal
+        title="Editar conta"
+        visible={props.isModalVisible}
+        onOk={props.handleCancel}
+        onCancel={props.handleCancel}
+      >
+        <StyledForms>
+          <center>
+              <Form
+                onFinish={onSave}
+                autoComplete="off"
+                onFinishFailed={onFinishFailed}
+              >
+                <Form.Item
+                  name="nome"
+                  value={userEdit.nome}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
-                    label="Nome"
-                    type="text"
-                    className="form-control"
+                    prefix={<UserOutlined />}
                     name="nome"
+                    className="input"
+                    type="text"
                     placeholder="Nome"
-                    value={userEdit.nome}
-                    onChange={setInputs}
                   />
-                </div>
-                <div className="mb-3">
+                </Form.Item>
+                <Form.Item
+                  name="email"
+                  value={userEdit.email}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
-                    label="Email"
-                    type="email"
-                    className="form-control"
+                    prefix={<MailOutlined />}
                     name="email"
+                    className="input"
+                    type="email"
                     placeholder="name@example.com"
-                    value={userEdit.email}
-                    onChange={setInputs}
                   />
-                </div>
-                <div className="mb-3">
+                </Form.Item>
+                <Form.Item
+                  name="endereco"
+                  value={userEdit.endereco}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
-                    label="Endereeço"
-                    className="form-control"
-                    type="text"
+                    prefix={<HomeOutlined />}
                     name="endereco"
+                    className="input"
                     placeholder="Rua: Tal,1234"
-                    value={userEdit.endereco}
-                    onChange={setInputs}
                   />
-                </div>
-                <div className="mb-3">
+                </Form.Item>
+                <Form.Item
+                  name="telefone"
+                  value={userEdit.telefone}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
-                    label="Telefone"
-                    type="text"
-                    className="form-control"
+                    prefix={<PhoneOutlined />}
                     name="telefone"
+                    type="text"
+                    className="input"
                     placeholder="(DD)94834-4456"
-                    value={userEdit.telefone}
-                    onChange={setInputs}
                   />
-                </div>
-                <div className="mb-3">
-                  <Input
-                    label="Senha"
-                    type="password"
-                    className="form-control"
+                </Form.Item>
+                <Form.Item
+                  name="senha"
+                  placeholder="Senha"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                  value={userEdit.senha}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
+                  <Input.Password
+                    prefix={<UnlockOutlined />}
                     name="senha"
-                    placeholder="Senha"
-                    value={userEdit.senha}
-                    onChange={setInputs}
-                  />
-                </div>
-                <div className="mb-3">
-                  <Input
-                    label="Confirmar Senha"
+                    className="input"
                     type="password"
-                    className="form-control"
+                    placeholder="Senha"
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="confSenha"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                  value={userEdit.confSenha}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
+                  <Input.Password
+                    prefix={<UnlockOutlined />}
                     name="confSenha"
+                    className="input"
+                    type="password"
                     placeholder="Confirmar Senha"
-                    value={userEdit.confSenha}
-                    onChange={setInputs}
                   />
-                </div>
-                <div className="modal-footer">
-                  <input
-                    type="submit"
-                    value="Editar"
-                    className="btn"
-                    tabindex="1"
-                  />
-                </div>
-                <br />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+                </Form.Item>
+                {erro.length > 0 && (
+                  <center>
+                    <spam>{erro}</spam>
+                  </center>
+                )}
+                <Button htmlType="submit" className="register">
+                  Register
+                </Button>
+              </Form>
+          </center>
+        </StyledForms>
+      </Modal>
     </div>
   );
 }
