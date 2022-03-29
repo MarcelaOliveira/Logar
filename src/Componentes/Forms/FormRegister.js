@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyledForms } from "./StyledForms";
-import { Input, Layout, Button } from "antd";
+import { Form, Input, Button } from "antd";
 import { Row, Col, Card } from "antd";
 import {
   UserOutlined,
@@ -14,8 +14,8 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 export default function FormCadastro(props) {
   const { nome, email, endereco, telefone, senha, confSenha, onClick } = props;
-  const { Content } = Layout;
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState();
+  const [erro, setErro] = useState({});
   const [buttonState, setButtonState] = useState();
   const setInputs = (evento) => {
     const stat = { ...values };
@@ -24,13 +24,21 @@ export default function FormCadastro(props) {
   };
 
   const onSave = (evente) => {
-    evente.preventDefault();
-    props.onSubmit(values);
+    if (values.senha === values.confSenha) {
+      props.onFinish(values);
+    } else {
+      setErro("Senha e confirmar senha devem ser iguais!");
+    }
   };
 
   const handleSizeChange = (e) => {
     setButtonState({ size: e.target.value });
   };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   const size = buttonState;
   return (
     <StyledForms>
@@ -48,7 +56,10 @@ export default function FormCadastro(props) {
               align="middle"
               span={8}
             >
-              <img src="https://img.freepik.com/free-vector/women-freelance-african-girl-headphones-with-laptop-sitting-table-concept-illustration-working-from-home-studying-education-communication-healthy-lifestyle-vector-flat-style_189033-266.jpg?size=338&ext=jpg" />
+              <img
+                alt="Register"
+                src="https://img.freepik.com/free-vector/women-freelance-african-girl-headphones-with-laptop-sitting-table-concept-illustration-working-from-home-studying-education-communication-healthy-lifestyle-vector-flat-style_189033-266.jpg?size=338&ext=jpg"
+              />
             </Col>
             <Col
               className="gutter-row"
@@ -57,87 +68,141 @@ export default function FormCadastro(props) {
               span={10}
             >
               <h1>Register</h1>
-              <form onSubmit={onSave}>
-                <div>
+              <Form
+                onFinish={onSave}
+                autoComplete="off"
+                onFinishFailed={onFinishFailed}
+              >
+                <Form.Item
+                  name="nome"
+                  value={nome}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
                     prefix={<UserOutlined />}
+                    name="nome"
                     className="input"
                     type="text"
-                    name="nome"
                     placeholder="Nome"
-                    value={nome}
-                    onChange={setInputs}
                   />
-                </div>
-                <br />
-                <div>
+                </Form.Item>
+                <Form.Item
+                  name="email"
+                  value={email}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
                     prefix={<MailOutlined />}
+                    name="email"
                     className="input"
                     type="email"
-                    name="email"
                     placeholder="name@example.com"
-                    value={email}
-                    onChange={setInputs}
                   />
-                </div>
-                <br />
-                <div>
+                </Form.Item>
+                <Form.Item
+                  name="endereco"
+                  value={endereco}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
                     prefix={<HomeOutlined />}
-                    className="input"
                     name="endereco"
+                    className="input"
                     placeholder="Rua: Tal,1234"
-                    value={endereco}
-                    onChange={setInputs}
                   />
-                </div>
-                <br />
-                <div>
+                </Form.Item>
+                <Form.Item
+                  name="telefone"
+                  value={telefone}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input
                     prefix={<PhoneOutlined />}
-                    className="input"
                     name="telefone"
+                    type="text"
+                    className="input"
                     placeholder="(DD)94834-4456"
-                    value={telefone}
-                    onChange={setInputs}
                   />
-                </div>
-                <br />
-                <div>
+                </Form.Item>
+                <Form.Item
+                  name="senha"
+                  placeholder="Senha"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                  value={senha}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input.Password
                     prefix={<UnlockOutlined />}
-                    className="input"
-                    label="Senha"
-                    type="password"
                     name="senha"
+                    className="input"
+                    type="password"
                     placeholder="Senha"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                    value={senha}
-                    onChange={setInputs}
                   />
-                </div>
-                <br />
-                <div>
+                </Form.Item>
+
+                <Form.Item
+                  name="confSenha"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                  value={confSenha}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
                   <Input.Password
                     prefix={<UnlockOutlined />}
-                    className="input"
-                    label="Confirmar Senha"
-                    type="password"
                     name="confSenha"
+                    className="input"
+                    type="password"
                     placeholder="Confirmar Senha"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                    value={confSenha}
-                    onChange={setInputs}
                   />
-                </div>
-                <br />
-                <Button className="register">Register</Button>
-              </form>
+                </Form.Item>
+                {erro.length > 0 && (
+                  <center>
+                    <spam>{erro}</spam>
+                  </center>
+                )}
+                <Button htmlType="submit" className="register">
+                  Register
+                </Button>
+              </Form>
               <div>
                 Já é cadastrado?
                 <Button type="link" size={size} onClick={onClick}>

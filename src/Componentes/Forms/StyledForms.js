@@ -1,11 +1,6 @@
 import Styled from "styled-components";
 
 export const StyledForms = Styled.div`
-     background: rgb(2, 0, 36);
-    background: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 1) 19%,
-    rgba(0, 200, 241, 1) 100%
     input[type= "submit"]{
        border-radius: 50px;
     }
@@ -16,7 +11,7 @@ export const StyledForms = Styled.div`
         border-radius: 50px;
         border-color: #00ACEE;
         width: 400px;
-        color: #fff;
+        color: #00ACEE;
     }
     .register: hover{
         color: white;
@@ -26,17 +21,8 @@ export const StyledForms = Styled.div`
         color: #00ACEE;
         font-weight:  400;
     }
-    /* h1 {
-        position: center;
-    }  
-    button.btn {
-        color: white;
-        border: none;
-        background-color: blue;
+    spam{
+        color: red;
+        margin-top: -2px;
     }
-    button.deslogar{
-        border: none;
-        color: blue;
-        font-size: 15px;
-    } */
 `;

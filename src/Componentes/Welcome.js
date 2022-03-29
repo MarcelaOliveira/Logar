@@ -1,60 +1,69 @@
-import React from "react";
+import React, { useState } from "react";
 import ModalEditar from "./Modals/ModalEditar";
 import ModalDeletar from "./Modals/ModalDeletar";
+import { Table, Tag, Space, Button, Card } from "antd";
+import "antd/dist/antd.css";
 
 function Welcome({ user, deslogar, onSubmit, onDeletar }) {
+  const [buttonState, setButtonState] = useState();
+  const handleSizeChange = (e) => {
+    setButtonState({ size: e.target.value });
+  };
+  const size = buttonState;
+
+  const columns = [
+    {
+      title: "Nome",
+      dataIndex: "nome",
+      key: "nome",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Endereço",
+      dataIndex: "endereço",
+      key: "endereço",
+    },
+    {
+      title: "Telefone",
+      key: "telefone",
+      dataIndex: "telefone",
+    },
+    {
+      title: "Ações",
+      key: "ações",
+    },
+  ];
+
+  const data = [
+    {
+      key: "1",
+      nome: { nome: user.nome },
+      email: { email: user.email },
+      endereço: { endereço: user.endereço },
+      telefone: { telefone: user.telefone },
+    },
+  ];
+
   return (
-    <div>
-      <div className="container my-2 d-flex justify-content-center">
-        <h2>Welcome, {user.nome}!</h2>
-      </div>
-      <div className="container mt-3">
-        <div className="my-1 px-5 bg-white rounded shadow-sm">
-          <div className="col-12">
-            <h2 className="text-center">Seus dados</h2>
-          </div>
-          <div className="table-responsive my-3">
-            <table className="table" id="tableUser">
-              <thead>
-                <th scope="col">Nome</th>
-                <th scope="col">Email</th>
-                <th scope="col">Endereço</th>
-                <th scope="col">Telefone</th>
-                <th scope="col">Ações</th>
-              </thead>
-              {user && (
-                <tbody>
-                  <td>{user.nome}</td>
-                  <td>{user.email}</td>
-                  <td>{user.endereco}</td>
-                  <td>{user.telefone}</td>
-                  <td>
-                    <i
-                      className="inverted blue edit outline icon"
-                      data-toggle="modal"
-                      data-target="#EditarConta"
-                    ></i>
-                    <i
-                      className="inverted red trash icon"
-                      data-toggle="modal"
-                      data-target="#DeletarUser"
-                    ></i>
-                  </td>
-                  <ModalEditar {...user} onSubmit={onSubmit} />
-                  <ModalDeletar onDeletar={onDeletar} />
-                </tbody>
-              )}
-            </table>
-          </div>
-        </div>
-      </div>
-      <div className="container d-flex justify-content-center">
-        <div className="card">
-          <div className="card-body">
-            Deseja sair? <button onClick={deslogar}>Sair</button>
-          </div>
-        </div>
-      </div>
+    <div className="gutter-row" justify="space-around" align="middle" span={8}>
+      <Table columns={columns} dataSource={data} />
+      <center>
+        <Card
+          type="inner"
+          style={{ marginTop: 20, width: 200 }}
+          justify="space-around"
+          align="middle"
+        >
+          Deseja sair?
+          <Button type="link" size={size} onClick={deslogar}>
+            Sair
+          </Button>
+        </Card>
+      </center>
     </div>
   );
 }

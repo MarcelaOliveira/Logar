@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import Input from "./InputComponent";
+import { StyledForms } from "./StyledForms";
+import { Row, Col, Card ,Form, Input, Button } from "antd";
+import { MailOutlined, UnlockOutlined } from "@ant-design/icons";
+import "antd/dist/antd.css";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 
 export default function FormLogin(props) {
-  const [values, setValues] = useState([]);
+  const [values, setValues] = useState();
+  const [buttonState, setButtonState] = useState();
   const setInputs = (evento) => {
     const stat = { ...values };
     stat[evento.target.name] = evento.target.value;
@@ -10,51 +15,108 @@ export default function FormLogin(props) {
   };
 
   const onSave = (evente) => {
-    evente.preventDefault();
     props.onSubmit(values);
   };
 
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const handleSizeChange = (e) => {
+    setButtonState({ size: e.target.value });
+  };
+  const size = buttonState;
+
   return (
-    <div>
-      <h1 className="text-center h1 mt-2 fw-normal">Login</h1>
-      <div className="container d-flex justify-content-center">
-        <div className=" mt-2 mb-2 w-50">
-          <form onSubmit={onSave}>
-            <div className="mb-3">
-              <Input
-                label="Email"
-                type="email"
-                className="form-control"
-                name="email"
-                placeholder="name@example.com"
-                value={props.email}
-                onChange={setInputs}
+    <StyledForms>
+      <center>
+        <Card
+          type="inner"
+          style={{ marginTop: 80, width: 1000 }}
+          justify="space-around"
+          align="middle"
+        >
+          <Row justify="space-around" align="middle">
+            <Col
+              className="gutter-row"
+              justify="space-around"
+              align="middle"
+              span={8}
+            >
+              <img
+                alt="Login"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_z_Cz4Q8MWWJsg8_B8SrNHMbfgrLY8Z7xY5jXM58Gz-Y8O9x4zej1v9wSWvqViQFeuMQ&usqp=CAU"
               />
-            </div>
-            <div className="mb-3">
-              <Input
-                label="Senha"
-                type="password"
-                className="form-control"
-                name="senha"
-                placeholder="Senha"
-                value={props.senha}
-                onChange={setInputs}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Entrar
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className="container d-flex justify-content-center">
-        <div className="card">
-          <div className="card-body">
-            Já é cadastrado <button onClick={props.onClick}>Cadastre-se</button>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Col>
+            <Col
+              className="gutter-row"
+              justify="space-around"
+              align="middle"
+              span={10}
+            >
+              <h1>Logar</h1>
+              <Form
+                onFinish={onSave}
+                autoComplete="off"
+                onFinishFailed={onFinishFailed}
+              >
+                <Form.Item
+                  name="email"
+                  value={props.email}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
+                  <Input
+                    prefix={<MailOutlined />}
+                    name="email"
+                    className="input"
+                    type="email"
+                    placeholder="name@example.com"
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="senha"
+                  placeholder="Senha"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                  value={props.senha}
+                  onChange={setInputs}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor preencha todos os campos!",
+                    },
+                  ]}
+                >
+                  <Input.Password
+                    prefix={<UnlockOutlined />}
+                    name="senha"
+                    className="input"
+                    type="password"
+                    placeholder="Senha"
+                  />
+                </Form.Item>
+                <Button htmlType="submit" className="register">
+                  Logar
+                </Button>
+              </Form>
+              <div>
+                Não é cadastrado?
+                <Button type="link" size={size} onClick={props.onClick}>
+                  Cadastre-se
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Card>
+      </center>
+    </StyledForms>
   );
 }
