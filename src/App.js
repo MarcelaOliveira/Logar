@@ -30,7 +30,7 @@ const App = () => {
   useEffect(() => {
     let user = localStorage.getItem("logged");
     if (user != null) {
-      if (JSON.parse(user) === "marcela@gmail.com") {
+      if (confirmAdm(user)) {
         setScreen("ViewAdm");
       } else {
         setScreen("Welcome");
@@ -96,7 +96,7 @@ const App = () => {
     });
     setLocalStorage(newData);
     localStorage.setItem("logged", JSON.stringify(editar.email));
-    window.location.reload(false);
+    window.location.reload(true);
   };
 
   const handleDeletar = (deletar) => {

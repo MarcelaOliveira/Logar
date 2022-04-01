@@ -1,6 +1,9 @@
 import Styled from "styled-components";
 
 export const StyledForms = Styled.div`
+    .card{
+        border-radius: 10px;
+    }
     input[type= "submit"]{
        border-radius: 50px;
     }

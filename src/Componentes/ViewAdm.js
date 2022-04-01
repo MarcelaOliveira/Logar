@@ -43,31 +43,40 @@ export default function ViwAdm({ users, deslogar }) {
           endereco: user.endereco,
           telefone: user.telefone,
         })
-      )
+      );
   }
 
   return (
     <div style={{ marginTop: 20 }}>
-      <div justify="space-around" align="middle">
-        <h1 style={{color: '#00ACEE'}}>Usuarios cadastrados</h1>
-      </div>
-      <Row justify="space-around" align="middle">
-        <Col span={18}>
-          <Table columns={columns} dataSource={data} />
-        </Col>
-      </Row>
-
       <center>
         <Card
           type="inner"
-          style={{ marginTop: 20, width: 200 }}
-          justify="space-around"
+          ustify="space-around"
           align="middle"
+          style={{ marginTop: 80, width: 1200 }}
         >
-          Deseja sair?
-          <Button type="link" size={size} onClick={deslogar}>
-            Sair
-          </Button>
+          <div justify="space-around" align="middle">
+            <h1 style={{ color: "#00ACEE" }}>Usuarios cadastrados</h1>
+          </div>
+          <Row justify="space-around" align="middle">
+            <Col span={18}>
+              <Table columns={columns} dataSource={data} pagination={false} />
+            </Col>
+          </Row>
+
+          <center>
+            <Card
+              type="inner"
+              style={{ marginTop: 20, width: 200 }}
+              justify="space-around"
+              align="middle"
+            >
+              Deseja sair?
+              <Button type="link" size={size} onClick={deslogar}>
+                Sair
+              </Button>
+            </Card>
+          </center>
         </Card>
       </center>
     </div>

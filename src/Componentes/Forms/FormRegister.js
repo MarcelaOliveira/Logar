@@ -46,6 +46,7 @@ export default function FormCadastro(props) {
     <StyledForms>
       <center>
         <Card
+          className="card"
           type="inner"
           style={{ marginTop: 80, width: 1000 }}
           justify="space-around"

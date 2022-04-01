@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ModalEditar from "./Modals/ModalEditar";
 import ModalDeletar from "./Modals/ModalDeletar";
+import { StyledViw } from "./StyledViw";
 import { Table, Row, Col, Button, Card } from "antd";
 import { FormOutlined, DeleteOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
@@ -81,41 +82,51 @@ function Welcome({ user, deslogar, onSubmit, onDeletar }) {
   ];
 
   return (
-    <div style={{ marginTop: 20 }}>
-      <div justify="space-around" align="middle">
-        <h1 style={{ color: "#00ACEE" }}>Welcome, {user.nome}</h1>
-      </div>
-      <Row justify="space-around" align="middle">
-        <Col span={18}>
-          <Table columns={columns} dataSource={data} />
-          <ModalEditar
-            user={user}
-            onSubmit={onSubmit}
-            isModalVisible={isModalVisible}
-            handleCancel={handleCancel}
-          />
-          <ModalDeletar
-            isModalDeleteVisible={isModalDeleteVisible}
-            onSubmit={onDeletar}
-            handleCancel={handleCancel}
-          />
-        </Col>
-      </Row>
-
+    <StyledViw>
       <center>
         <Card
+          className="card"
           type="inner"
-          style={{ marginTop: 20, width: 200 }}
-          justify="space-around"
+          ustify="space-around"
           align="middle"
+          style={{ marginTop: 80, width: 1200 }}
         >
-          Deseja sair?
-          <Button type="link" size={size} onClick={deslogar}>
-            Sair
-          </Button>
+          <div justify="space-around" align="middle">
+            <h1>Welcome, {user.nome}</h1>
+          </div>
+          <Row justify="space-around" align="middle">
+            <Col span={18}>
+              <Table columns={columns} dataSource={data} pagination={false} />
+              <ModalEditar
+                user={user}
+                onSubmit={onSubmit}
+                isModalVisible={isModalVisible}
+                handleCancel={handleCancel}
+              />
+              <ModalDeletar
+                isModalDeleteVisible={isModalDeleteVisible}
+                onSubmit={onDeletar}
+                handleCancel={handleCancel}
+              />
+            </Col>
+          </Row>
+
+          <center>
+            <Card
+              type="inner"
+              style={{ marginTop: 20, width: 200 }}
+              justify="space-around"
+              align="middle"
+            >
+              Deseja sair?
+              <Button type="link" size={size} onClick={deslogar}>
+                Sair
+              </Button>
+            </Card>
+          </center>
         </Card>
       </center>
-    </div>
+    </StyledViw>
   );
 }
 

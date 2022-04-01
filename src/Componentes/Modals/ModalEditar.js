@@ -49,7 +49,6 @@ export default function ModalEditar(props) {
     });
   }, [props]);
 
-  console.log(userEdit);
   return (
     <div>
       <Form autoComplete="off" onFinishFailed={onFinishFailed} form={form}>

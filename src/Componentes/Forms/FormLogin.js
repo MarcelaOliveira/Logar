@@ -31,6 +31,7 @@ export default function FormLogin(props) {
     <StyledForms>
       <center>
         <Card
+          className="card"
           type="inner"
           style={{ marginTop: 80, width: 1000 }}
           justify="space-around"
@@ -45,7 +46,7 @@ export default function FormLogin(props) {
             >
               <img
                 alt="Login"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_z_Cz4Q8MWWJsg8_B8SrNHMbfgrLY8Z7xY5jXM58Gz-Y8O9x4zej1v9wSWvqViQFeuMQ&usqp=CAU"
+                src="https://www.onebharatpharmacy.com/login/svg/admin-img.svg"
               />
             </Col>
             <Col
@@ -53,6 +54,7 @@ export default function FormLogin(props) {
               justify="space-around"
               align="middle"
               span={10}
+              offset={4}
             >
               <h1>Logar</h1>
               <Form
