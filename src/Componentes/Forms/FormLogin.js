@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyledForms } from "./StyledForms";
-import { Row, Col, Card ,Form, Input, Button } from "antd";
+import { Row, Col, Card, Form, Input, Button } from "antd";
 import { MailOutlined, UnlockOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";

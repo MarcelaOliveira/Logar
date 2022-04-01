@@ -13,20 +13,25 @@ import {
 import "antd/dist/antd.css";
 
 export default function ModalEditar(props) {
+  const [form] = Form.useForm();
   const [userEdit, setUserEdit] = useState({});
   const [erro, setErro] = useState({});
   const [buttonState, setButtonState] = useState();
-  const { nome, email, endereco, telefone, senha, confSenha } = props;
+  const { user } = props;
 
   const setInputs = (evento) => {
-    const stat = { ...userEdit };
+    const stat = { ...user };
     stat[evento.target.name] = evento.target.value;
     setUserEdit(stat);
   };
 
   const onSave = (evente) => {
-    evente.preventDefault9();
-    props.onFinish(userEdit);
+    if (evente.senha === evente.confSenha) {
+      props.onSubmit(userEdit);
+      console.log("oK");
+    } else {
+      setErro("Senha e confirmar senha devem ser iguais!");
+    }
   };
   const handleSizeChange = (e) => {
     setButtonState({ size: e.target.value });
@@ -39,27 +44,32 @@ export default function ModalEditar(props) {
   const size = buttonState;
 
   useEffect(() => {
-    setUserEdit({ nome, email, endereco, telefone, senha, confSenha });
+    form.setFieldsValue({
+      ...user,
+    });
   }, [props]);
 
+  console.log(userEdit);
   return (
     <div>
-      <Modal
-        title="Editar conta"
-        visible={props.isModalVisible}
-        onOk={props.handleCancel}
-        onCancel={props.handleCancel}
-      >
-        <StyledForms>
-          <center>
-            <Form
-              onFinish={onSave}
-              autoComplete="off"
-              onFinishFailed={onFinishFailed}
-            >
+      <Form autoComplete="off" onFinishFailed={onFinishFailed} form={form}>
+        <Modal
+          title="Editar conta"
+          visible={props.isModalVisible}
+          onCancel={props.handleCancel}
+          footer={[
+            <Button key="submit" type="primary" onClick={onSave}>
+              Editar
+            </Button>,
+            <Button key="back" onClick={props.handleCancel}>
+              Cancelar
+            </Button>,
+          ]}
+        >
+          <StyledForms>
+            <center>
               <Form.Item
                 name="nome"
-                value={userEdit.nome}
                 onChange={setInputs}
                 rules={[
                   {
@@ -77,7 +87,6 @@ export default function ModalEditar(props) {
               </Form.Item>
               <Form.Item
                 name="email"
-                value={userEdit.email}
                 onChange={setInputs}
                 rules={[
                   {
@@ -95,7 +104,6 @@ export default function ModalEditar(props) {
               </Form.Item>
               <Form.Item
                 name="endereco"
-                value={userEdit.endereco}
                 onChange={setInputs}
                 rules={[
                   {
@@ -112,7 +120,6 @@ export default function ModalEditar(props) {
               </Form.Item>
               <Form.Item
                 name="telefone"
-                value={userEdit.telefone}
                 onChange={setInputs}
                 rules={[
                   {
@@ -133,7 +140,6 @@ export default function ModalEditar(props) {
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }
-                value={userEdit.senha}
                 onChange={setInputs}
                 rules={[
                   {
@@ -155,7 +161,6 @@ export default function ModalEditar(props) {
                 iconRender={(visible) =>
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 }
-                value={userEdit.confSenha}
                 onChange={setInputs}
                 rules={[
                   {
@@ -176,13 +181,10 @@ export default function ModalEditar(props) {
                   <spam>{erro}</spam>
                 </center>
               )}
-              <Button htmlType="submit" className="register">
-                Register
-              </Button>
-            </Form>
-          </center>
-        </StyledForms>
-      </Modal>
+            </center>
+          </StyledForms>
+        </Modal>
+      </Form>
     </div>
   );
 }

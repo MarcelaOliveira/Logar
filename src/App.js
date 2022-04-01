@@ -96,6 +96,7 @@ const App = () => {
     });
     setLocalStorage(newData);
     localStorage.setItem("logged", JSON.stringify(editar.email));
+    window.location.reload(false);
   };
 
   const handleDeletar = (deletar) => {

@@ -89,7 +89,7 @@ function Welcome({ user, deslogar, onSubmit, onDeletar }) {
         <Col span={18}>
           <Table columns={columns} dataSource={data} />
           <ModalEditar
-            {...user}
+            user={user}
             onSubmit={onSubmit}
             isModalVisible={isModalVisible}
             handleCancel={handleCancel}
